@@ -1,0 +1,22 @@
+import boto3
+from dateutil import relativedelta
+from datetime import datetime, timezone
+
+client = boto3.client(
+    's3',
+    aws_access_key_id="{{ AWS_ACCESS_KEY_ID }}",
+    aws_secret_access_key="{{ AWS_SECRET_ACCESS_KEY }}"
+)
+
+
+s3 = boto3.resource('s3')
+bucket = s3.Bucket('{{ S3_BUCKET_NAME }}')
+
+N_DAYS_AGO = 170
+today = datetime.now(timezone.utc)
+n_days_ago = today - relativedelta.relativedelta(months=6)
+
+for obj in bucket.objects.filter(Prefix='{{  S3_BUCKET_PREFIX }}'):
+    bucketObjectDate=(obj.last_modified)
+    if bucketObjectDate > n_days_ago:
+        print (obj.key)

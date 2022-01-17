@@ -1,0 +1,9 @@
+---
+ - hosts: all
+   vars:
+    - AWS_ACCESS_KEY_ID: "default" #Your AWS access key ID
+    - AWS_SECRET_ACCESS_KEY: "default" #Your AWS Secret access key
+    - S3_BUCKET_NAME: "default" #Your S3 bucket name 
+    - S3_BUCKET_PREFIX: "default" #Your s3 bucket prefix/subfolder
+   roles:
+    - run_s3_check

@@ -1,0 +1,29 @@
+---
+- name: Install dependencies python
+  package:
+    name: python3
+    state: present
+  become: yes
+
+- name: Install python package dependencies
+  pip:
+    name: ['boto3','datetime']
+
+- name: Import template task
+  template:
+    src: template/list.py.j2
+    dest: /tmp/list.py
+    mode: '0644'
+
+- name: Run python script
+  command: /usr/bin/python /tmp/list.py
+  register: s3_items
+
+- name: Clean up tmp files
+  file:
+    state: absent
+    path: '/tmp/list.py'
+
+- name: List s3_items
+  debug: 
+    var: s3_items.stdout_lines
